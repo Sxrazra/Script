@@ -1,0 +1,37 @@
+-- 创建 BillboardGui 和 TextLabel 的函数
+local function addLabelToModel(model, labelText, textColor)
+    -- 先检查模型是否已有 BillboardGui
+    local existingBillboard = model:FindFirstChild("ObjectLabel")
+    if existingBillboard then
+        -- 如果已有，则返回
+        return
+    end
+
+    -- 创建 BillboardGui
+    local billboardGui = Instance.new("BillboardGui")
+    billboardGui.Name = "ObjectLabel"
+    billboardGui.Size = UDim2.new(0, 30, 0, 50)  -- 设置文字框大小
+    billboardGui.StudsOffset = Vector3.new(0, 3, 0)  -- 文字标记略微上移
+    billboardGui.Adornee = model.PrimaryPart  -- 使用模型的 PrimaryPart
+    billboardGui.AlwaysOnTop = true  -- 保证文字在最上层显示
+    
+    -- 创建 TextLabel
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)  -- 填充 BillboardGui
+    label.BackgroundTransparency = 1  -- 文字背景透明
+    label.Text = labelText  -- 设置显示的文字
+    label.TextColor3 = textColor  -- 设置文字颜色
+    label.TextScaled = true
+    label.Font = Enum.Font.SourceSans  -- 设置字体
+    label.TextSize = 24  -- 设置文字大小
+    label.Parent = billboardGui
+
+    billboardGui.Parent = model
+end
+
+-- 添加文字标记到 Small Safes
+for i, v in pairs(game:GetService("Workspace").Map.BredMakurz:GetDescendants()) do
+    if string.find(v.Name, "SmallSafe") and v:IsA("Model") then
+        addLabelToModel(v, "Small Safe", Color3.fromRGB(228, 236, 243))
+    end
+end
