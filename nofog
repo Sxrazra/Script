@@ -1,0 +1,16 @@
+local function nofog()
+    local Lighting = game:GetService("Lighting")
+    
+    -- 設置FogEnd參數為極大的值，以移除霧效果
+    Lighting.FogEnd = 100000
+    
+    -- 遍歷Lighting中的所有子物件，並移除Atmosphere物件
+    for i, v in pairs(Lighting:GetDescendants()) do
+        if v:IsA("Atmosphere") then
+            v:Destroy()
+        end
+    end
+end
+
+-- 調用nofog功能
+nofog()
