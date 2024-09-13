@@ -1,0 +1,74 @@
+-- Configuration
+local lockMouseButton = Enum.UserInputType.MouseButton2  -- Right mouse button
+
+-- Variables
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+local userInputService = game:GetService("UserInputService")
+local targetPlayer = nil
+local aiming = false
+local aimingConnection
+
+-- Function to find the nearest visible player
+local function findNearestPlayer()
+    local closestDistance = math.huge
+    local closestPlayer = nil
+    
+    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            local character = otherPlayer.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                local targetPosition = character.HumanoidRootPart.Position
+                local screenPosition, isVisible = camera:WorldToScreenPoint(targetPosition)
+                
+                if isVisible then
+                    local distance = (targetPosition - camera.CFrame.Position).Magnitude
+                    if distance < closestDistance then
+                        closestDistance = distance
+                        closestPlayer = otherPlayer
+                    end
+                end
+            end
+        end
+    end
+    
+    return closestPlayer
+end
+
+-- Function to update camera to target player's head
+local function updateCamera()
+    targetPlayer = findNearestPlayer()
+    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") then
+        local targetPosition = targetPlayer.Character.Head.Position
+        camera.CFrame = CFrame.new(camera.CFrame.Position, targetPosition)
+    end
+end
+
+-- Detect mouse right button press
+userInputService.InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.UserInputType == lockMouseButton then
+        aiming = true
+        aimingConnection = game:GetService("RunService").RenderStepped:Connect(updateCamera)
+    end
+end)
+
+-- Detect mouse right button release
+userInputService.InputEnded:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.UserInputType == lockMouseButton then
+        aiming = false
+        if aimingConnection then
+            aimingConnection:Disconnect()
+            aimingConnection = nil
+        end
+    end
+end)
+
+-- Optional: Reset aiming state when player character respawns
+player.CharacterAdded:Connect(function()
+    aiming = false
+    targetPlayer = nil
+    if aimingConnection then
+        aimingConnection:Disconnect()
+        aimingConnection = nil
+    end
+end)
