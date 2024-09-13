@@ -1,17 +1,17 @@
--- FullBright 輕量無限循環腳本
-
-while true do
-    -- 設置亮度
-    game:GetService("Lighting").Brightness = 1
-    -- 設置時間為正午
-    game:GetService("Lighting").ClockTime = 12
-    -- 設置霧結束距離
-    game:GetService("Lighting").FogEnd = 786543
-    -- 關閉全局陰影
-    game:GetService("Lighting").GlobalShadows = false
-    -- 設置環境光
-    game:GetService("Lighting").Ambient = Color3.fromRGB(178, 178, 178)
-
-    -- 輕微的延遲，避免遊戲卡死
-    wait(0.05) -- 0.1秒的延遲讓性能保持穩定
+-- 停止舊的 Brightness 循環
+if brightLoop then
+	brightLoop:Disconnect()
 end
+
+-- 定義 Brightness 函數
+local function brightFunc()
+	local Lighting = game:GetService("Lighting")
+	Lighting.Brightness = 2
+	Lighting.ClockTime = 14
+	Lighting.FogEnd = 100000
+	Lighting.GlobalShadows = false
+	Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+end
+
+-- 創建無限循環，應用 Brightness 設置
+brightLoop = game:GetService("RunService").RenderStepped:Connect(brightFunc)
