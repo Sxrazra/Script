@@ -1,0 +1,50 @@
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService") -- To capture key press
+
+local tpwalking = false  -- Variable to track whether tpwalk is active
+local hb = RunService.Heartbeat  -- Reference to Heartbeat event
+
+-- Function to start tpwalk
+local function startTpWalk(speaker, speed)
+    tpwalking = true
+    local chr = speaker.Character
+    local hum = chr and chr:FindFirstChildWhichIsA("Humanoid")
+
+    while tpwalking and chr and hum and hum.Parent do
+        local delta = hb:Wait()  -- Wait for next heartbeat frame
+        if hum.MoveDirection.Magnitude > 0 then  -- Check if player is moving
+            if speed and tonumber(speed) then
+                -- Move character by teleporting in the direction they are walking
+                chr:TranslateBy(hum.MoveDirection * tonumber(speed) * delta * 10)
+            else
+                -- Default movement speed if no specific speed is provided
+                chr:TranslateBy(hum.MoveDirection * delta * 10)
+            end
+        end
+    end
+end
+
+-- Function to stop tpwalk
+local function stopTpWalk()
+    tpwalking = false
+end
+
+-- Function to toggle tpwalk on and off
+local function toggleTpWalk()
+    local player = Players.LocalPlayer
+    if tpwalking then
+        stopTpWalk()
+        print("Teleport walk stopped")
+    else
+        startTpWalk(player, 1.5) -- You can change the speed (10 is default here)
+        print("Teleport walk started")
+    end
+end
+
+-- Bind the toggle function to a key press (for example, the "T" key)
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.T then  -- When "T" is pressed
+        toggleTpWalk()
+    end
+end)
