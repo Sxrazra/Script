@@ -1,0 +1,13 @@
+-- Function to remove all BillboardGui instances with the name "ObjectLabel"
+local function removeAllLabelsFromModels()
+    -- Iterate through all descendants of the target path
+    for _, v in pairs(game:GetService("Workspace").Map.BredMakurz:GetDescendants()) do
+        -- Check if the descendant is a BillboardGui with the name "ObjectLabel"
+        if v:IsA("BillboardGui") and v.Name == "ObjectLabel" then
+            v:Destroy()  -- Remove the BillboardGui instance
+        end
+    end
+end
+
+-- Call the function to clear all labels
+removeAllLabelsFromModels()
