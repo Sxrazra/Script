@@ -1,0 +1,36 @@
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+local ctrlHeld = false
+
+-- 檢測 Ctrl 鍵是否按住
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.KeyCode == Enum.KeyCode.LeftControl then
+        ctrlHeld = true
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input, gameProcessed)
+    if input.KeyCode == Enum.KeyCode.LeftControl then
+        ctrlHeld = false
+    end
+end)
+
+-- 點擊獲取物件名稱
+Mouse.Button1Down:Connect(function()
+    if ctrlHeld then
+        local target = Mouse.Target
+        if target then
+            local model = target:FindFirstAncestorOfClass("Model")
+            if model then
+                print("獲取模型名稱:", model.Name)
+            else
+                print("未找到模型")
+            end
+        else
+            print("未點擊到任何物件")
+        end
+    end
+end)
