@@ -12,7 +12,7 @@ Players = cloneref(game:GetService("Players"))
 if not game:IsLoaded() then
     local notLoaded = Instance.new("Message")
     notLoaded.Parent = COREGUI
-    notLoaded.Text = 'Infinite Fun (Infinite Yield mod) is waiting for the experience to load'
+    notLoaded.Text = 'Infinite Dorxer. (Infinite Yield mod) is waiting for the experience to load'
     game.Loaded:Wait()
     notLoaded:Destroy()
 end
@@ -602,15 +602,6 @@ IntroBackground.Position = UDim2.new(0, 0, 0, 45)
 IntroBackground.Size = UDim2.new(0, 250, 0, 175)
 IntroBackground.ZIndex = 10
 
-Logo.Name = "Logo"
-Logo.Parent = Holder
-Logo.BackgroundTransparency = 1
-Logo.BorderSizePixel = 0
-Logo.Position = UDim2.new(0, 125, 0, 127)
-Logo.Size = UDim2.new(0, 10, 0, 10)
-Logo.Image = "rbxassetid://18929188075"	-- Infinite Fun has a cuter logo, with my bootleg ixchoco_/Royale High-style poofy letters!
-Logo.ImageTransparency = 0
-Logo.ZIndex = 10
 
 Credits.Name = "Credits"
 Credits.Parent = Holder
